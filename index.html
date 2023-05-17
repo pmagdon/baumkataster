@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        #map {
+            width: 2215px;
+            height: 1563px;
+        }
+        </style>
+        <title>Baumkatasterköln</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/Stadviertel_1.js"></script>
+        <script src="data/Stadtbume_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[50.91663731779696,6.907820431814189],[50.961249757034885,7.006019431723964]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMSTamenToner_0');
+        map.getPane('pane_OSMSTamenToner_0').style.zIndex = 400;
+        var layer_OSMSTamenToner_0 = L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMSTamenToner_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_OSMSTamenToner_0;
+        map.addLayer(layer_OSMSTamenToner_0);
+        function pop_Stadviertel_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nummer'] !== null ? autolinker.link(feature.properties['nummer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name_lang'] !== null ? autolinker.link(feature.properties['name_lang'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nr_stbez'] !== null ? autolinker.link(feature.properties['nr_stbez'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['stbez'] !== null ? autolinker.link(feature.properties['stbez'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nr_stteil'] !== null ? autolinker.link(feature.properties['nr_stteil'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['stteil'] !== null ? autolinker.link(feature.properties['stteil'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? autolinker.link(feature.properties['Shape_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NUMPOINTS'] !== null ? autolinker.link(feature.properties['NUMPOINTS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['count_ha'] !== null ? autolinker.link(feature.properties['count_ha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Stadviertel_1_0(feature) {
+            if (feature.properties['count_ha'] >= 0.000000 && feature.properties['count_ha'] <= 10.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,252,245,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 10.000000 && feature.properties['count_ha'] <= 20.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,244,221,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 20.000000 && feature.properties['count_ha'] <= 30.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(191,230,185,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 30.000000 && feature.properties['count_ha'] <= 40.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,211,144,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 40.000000 && feature.properties['count_ha'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,186,108,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 50.000000 && feature.properties['count_ha'] <= 60.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(50,155,81,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 60.000000 && feature.properties['count_ha'] <= 70.000000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(13,120,53,0.593)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['count_ha'] >= 70.000000 && feature.properties['count_ha'] <= 70.616000 ) {
+                return {
+                pane: 'pane_Stadviertel_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.593)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,68,27,0.593)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Stadviertel_1');
+        map.getPane('pane_Stadviertel_1').style.zIndex = 401;
+        map.getPane('pane_Stadviertel_1').style['mix-blend-mode'] = 'normal';
+        var layer_Stadviertel_1 = new L.geoJson(json_Stadviertel_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Stadviertel_1',
+            layerName: 'layer_Stadviertel_1',
+            pane: 'pane_Stadviertel_1',
+            onEachFeature: pop_Stadviertel_1,
+            style: style_Stadviertel_1_0,
+        });
+        bounds_group.addLayer(layer_Stadviertel_1);
+        map.addLayer(layer_Stadviertel_1);
+        function pop_Stadtbume_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>objectid</strong><br />' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objekttyp'] !== null ? autolinker.link(feature.properties['objekttyp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['baumnr'] !== null ? autolinker.link(feature.properties['baumnr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KRONE'] !== null ? autolinker.link(feature.properties['KRONE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PFLANZJAH'] !== null ? autolinker.link(feature.properties['PFLANZJAH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DeutscherN'] !== null ? autolinker.link(feature.properties['DeutscherN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LaubNadel'] !== null ? autolinker.link(feature.properties['LaubNadel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Stadtbume_2_0(feature) {
+            switch(String(feature.properties['LaubNadel'])) {
+                case '0':
+                    return {
+                pane: 'pane_Stadtbume_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(147,231,98,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_Stadtbume_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(170,225,19,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_Stadtbume_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(31,109,31,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Stadtbume_2');
+        map.getPane('pane_Stadtbume_2').style.zIndex = 402;
+        map.getPane('pane_Stadtbume_2').style['mix-blend-mode'] = 'normal';
+        var layer_Stadtbume_2 = new L.geoJson(json_Stadtbume_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Stadtbume_2',
+            layerName: 'layer_Stadtbume_2',
+            pane: 'pane_Stadtbume_2',
+            onEachFeature: pop_Stadtbume_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Stadtbume_2_0(feature));
+            },
+        });
+        var cluster_Stadtbume_2 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_Stadtbume_2.addLayer(layer_Stadtbume_2);
+
+        bounds_group.addLayer(layer_Stadtbume_2);
+        cluster_Stadtbume_2.addTo(map);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Baumkatasterköln</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Das ist eine Demokarte für das Baumkataster Köln';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Stadtbäume<br /><table><tr><td style="text-align: center;"><img src="legend/Stadtbume_2_unbekannt0.png" /></td><td>unbekannt</td></tr><tr><td style="text-align: center;"><img src="legend/Stadtbume_2_Laubholz1.png" /></td><td>Laubholz</td></tr><tr><td style="text-align: center;"><img src="legend/Stadtbume_2_Nadelholz2.png" /></td><td>Nadelholz</td></tr></table>': cluster_Stadtbume_2,'Stadviertel<br /><table><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_010nha0.png" /></td><td>0 - 10 [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_1020nha1.png" /></td><td>10 - 20  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_2030nha2.png" /></td><td>20 - 30  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_3040nha3.png" /></td><td>30 - 40  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_4050nha4.png" /></td><td>40 - 50  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_5060nha5.png" /></td><td>50 - 60  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_6070nha6.png" /></td><td>60 - 70  [n/ha]</td></tr><tr><td style="text-align: center;"><img src="legend/Stadviertel_1_707062nha7.png" /></td><td>70 - 70,62  [n/ha]</td></tr></table>': layer_Stadviertel_1,"OSM STamen-Toner": layer_OSMSTamenToner_0,}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"LaubNadel": "int","count_ha": "real"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_LaubNadel = document.createElement("div");
+            div_LaubNadel.id = "div_LaubNadel";
+            div_LaubNadel.className = "slider";
+            document.getElementById("menu").appendChild(div_LaubNadel);
+            var lab_LaubNadel = document.createElement('div');
+            lab_LaubNadel.innerHTML  = 'LaubNadel: <span id="val_LaubNadel"></span>';
+            lab_LaubNadel.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_LaubNadel);
+            var reset_LaubNadel = document.createElement('div');
+            reset_LaubNadel.innerHTML = 'clear filter';
+            reset_LaubNadel.className = 'filterlabel';
+            lab_LaubNadel.className = 'filterlabel';
+            reset_LaubNadel.onclick = function() {
+                sel_LaubNadel.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_LaubNadel);
+            var sel_LaubNadel = document.getElementById('div_LaubNadel');
+            noUiSlider.create(sel_LaubNadel, {
+                connect: true,
+                start: [0, 2],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 0,
+                max: 2
+                }
+            });
+            sel_LaubNadel.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_LaubNadel = document.getElementById('val_LaubNadel');
+            val_LaubNadel.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_count_ha = document.createElement("div");
+            div_count_ha.id = "div_count_ha";
+            div_count_ha.className = "slider";
+            document.getElementById("menu").appendChild(div_count_ha);
+            var lab_count_ha = document.createElement('div');
+            lab_count_ha.innerHTML  = 'count_ha: <span id="val_count_ha"></span>';
+            lab_count_ha.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_count_ha);
+            var reset_count_ha = document.createElement('div');
+            reset_count_ha.innerHTML = 'clear filter';
+            reset_count_ha.className = 'filterlabel';
+            lab_count_ha.className = 'filterlabel';
+            reset_count_ha.onclick = function() {
+                sel_count_ha.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_count_ha);
+            var sel_count_ha = document.getElementById('div_count_ha');
+            noUiSlider.create(sel_count_ha, {
+                connect: true,
+                start: [0.032, 70.616],
+                range: {
+                min: 0.032,
+                max: 70.616
+                }
+            });
+            sel_count_ha.noUiSlider.on('update', function (values) {
+            val_count_ha = document.getElementById('val_count_ha');
+            val_count_ha.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+        </script>
+    </body>
+</html>
